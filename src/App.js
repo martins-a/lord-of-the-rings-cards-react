@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { css } from "styled-components";
+
+import AttributeSphere from "./AttributeSphere";
 import "./styles.css";
 
 const imageUrl =
@@ -8,7 +10,7 @@ const imageUrl =
 
 export default function App() {
   return (
-    <div class="App">
+    <div className="App">
       <Card name="Sauron" maxHealth="20" title="Keeper of the One Ring" />
     </div>
   );
@@ -105,8 +107,8 @@ function Card(props) {
         <ContentRegion>
           <AlignLeft>
             <ManaAndHealthRegion>
-              <Counter maxValue={maxHealth} color="#ff7272" />
-              <Counter maxValue={maxMana} color="#6fc3ff" />
+              <Counter waveColor="red" maxValue={maxHealth} color="#ff7272" />
+              <Counter waveColor="cyan" maxValue={maxMana} color="#6fc3ff" />
             </ManaAndHealthRegion>
           </AlignLeft>
           <CardInfo>
@@ -151,8 +153,32 @@ const ArrowUp = styled.img`
   transform: rotate(180deg);
 `;
 
+const SphereShape = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: black;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const SvgSpherePath = styled.path`
+  stroke: none;
+  fill: red;
+`;
+
+function Sphere(props) {
+  return (
+    <SphereShape>
+      <svg viewBox="0 0 100 100" preserveAspectRatio="xMaxYMid slice">
+        <SvgSpherePath d="M0,32L80,69.3C160,107,320,181,480,186.7C640,192,800,128,960,128C1120,128,1280,192,1360,224L1440,256L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></SvgSpherePath>
+      </svg>
+    </SphereShape>
+  );
+}
+
 function Counter(props) {
-  const { maxValue, color } = props;
+  const { maxValue, color, waveColor } = props;
 
   const [currentValue, setCurrentValue] = useState(maxValue);
 
@@ -176,6 +202,7 @@ function Counter(props) {
       </ArrowDecreaseIncrease>
       <div>{currentValue ? currentValue : "0"}</div>
       <div>/ {maxValue ? maxValue : "0"} </div>
+      <AttributeSphere waveColor={waveColor} />
     </CounterWraper>
   );
 }
